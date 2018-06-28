@@ -25,7 +25,7 @@ else
 fi
 
 if (( gui == 1 )); then
-  qemu-system-x86_64 -boot d -cdrom minimal_linux_live.iso $network
+  qemu-system-x86_64 -m 1G -boot d -cdrom minimal_linux_live.iso $network
 else
-  qemu-system-x86_64 -boot d -nographic -cdrom minimal_linux_live.iso $network
+  qemu-system-x86_64 -m 1G -boot d -nographic -cdrom minimal_linux_live.iso $network
 fi
