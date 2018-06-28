@@ -1,8 +1,8 @@
 .gitignore
+rootfs*
 busybox*
+syslinux*
 isoimage
 kernel*
 linux*
 *.iso
-syslinux*
-

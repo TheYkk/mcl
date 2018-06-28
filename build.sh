@@ -26,7 +26,9 @@ echo 'setsid cttyhack /bin/sh' >> init
 chmod +x init
 find . | cpio -R root:root -H newc -o | gzip > ../../isoimage/rootfs.gz
 cd ../../linux-$KERNEL_VERSION
-make mrproper defconfig bzImage
+make mrproper tinyconfig
+sed -i -e 's/# CONFIG_BLK_DEV_INITRD is not set/CONFIG_BLK_DEV_INITRD=y/g' .config
+make bzImage
 cp arch/x86/boot/bzImage ../isoimage/kernel.gz
 cd ../isoimage
 cp ../syslinux-$SYSLINUX_VERSION/bios/core/isolinux.bin .
@@ -43,4 +45,3 @@ xorriso \
   ./
 cd ..
 set +ex
-

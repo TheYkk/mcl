@@ -3,7 +3,7 @@
 all: build
 
 clean:
-	@rm -rf linux-* rootfs* *.tar.* *.iso
+	@rm -rf linux-* rootfs* *.tar.* *.gz *.iso
 
 build:
 	@echo "Building builder ..."
@@ -13,6 +13,8 @@ build:
 	@docker logs -f $(CID)
 	@echo "Copying image ..."
 	@docker cp $(CID):/build/minimal_linux_live.iso .
+	@docker cp $(CID):/build/isoimage/kernel.gz .
+	@docker cp $(CID):/build/isoimage/rootfs.gz .
 
-test:
+test: minimal_linux_live.iso
 	@./test.sh -g

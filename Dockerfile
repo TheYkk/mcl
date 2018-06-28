@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:trusty
 
 RUN apt-get update && \
     apt-get install -y wget bc build-essential gawk xorriso && \
@@ -6,7 +6,6 @@ RUN apt-get update && \
 
 COPY . /build
 
-VOLUME /build
 WORKDIR /build
 
 CMD ["./build.sh"]
