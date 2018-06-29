@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
-KERNEL_VERSION=4.12.3
-BUSYBOX_VERSION=1.27.1
+KERNEL_VERSION=4.17.3
+BUSYBOX_VERSION=1.28.4
 SYSLINUX_VERSION=6.03
 wget -O kernel.tar.xz http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
 wget -O busybox.tar.bz2 http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
@@ -26,9 +26,7 @@ echo 'setsid cttyhack /bin/sh' >> init
 chmod +x init
 find . | cpio -R root:root -H newc -o | gzip > ../../isoimage/rootfs.gz
 cd ../../linux-$KERNEL_VERSION
-make mrproper tinyconfig
-sed -i -e 's/# CONFIG_BLK_DEV_INITRD is not set/CONFIG_BLK_DEV_INITRD=y/g' .config
-make bzImage
+make mrproper defconfig bzImage
 cp arch/x86/boot/bzImage ../isoimage/kernel.gz
 cd ../isoimage
 cp ../syslinux-$SYSLINUX_VERSION/bios/core/isolinux.bin .

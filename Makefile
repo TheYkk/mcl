@@ -3,18 +3,18 @@
 all: build
 
 clean:
-	@rm -rf linux-* rootfs* *.tar.* *.gz *.iso
+	@rm -rf linux-* rootfs* *.tar.* *.gz *.xz *.iso
 
 build:
 	@echo "Building builder ..."
 	@docker build -t minimal-linux-script .
 	@echo "Building image ..."
-	$(eval CID=$(shell sh -c "docker run -d -i -t minimal-linux-script"))
-	@docker logs -f $(CID)
+	@docker run -i -t --name minimal_build minimal-linux-script
 	@echo "Copying image ..."
-	@docker cp $(CID):/build/minimal_linux_live.iso .
-	@docker cp $(CID):/build/isoimage/kernel.gz .
-	@docker cp $(CID):/build/isoimage/rootfs.gz .
+	@docker cp minimal_build:/build/minimal_linux_live.iso .
+	@docker cp minimal_build:/build/isoimage/kernel.gz .
+	@docker cp minimal_build:/build/isoimage/rootfs.gz .
+	@docker rm -f minimal_build
 
-test: minimal_linux_live.iso
+test:
 	@./test.sh -g
