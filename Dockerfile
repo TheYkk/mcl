@@ -1,9 +1,8 @@
-FROM ubuntu:trusty
+FROM alpine:3.7
 
-RUN apt-get update && \
-    apt-get install -y wget bc build-essential gawk xorriso && \
-    apt-get install -y libelf-dev libssl-dev bison flex && \
-    apt-get clean
+RUN apk -U add wget bc build-base gawk xorriso libelf-dev openssl-dev bison flex
+RUN apk -U add linux-headers
+RUN apk -U add perl
 
 COPY . /build
 
