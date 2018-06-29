@@ -3,15 +3,15 @@
 all: build
 
 clean:
-	@rm -rf linux-* rootfs* *.tar.* *.gz *.xz *.iso
+	@rm -rf kernel.gz rootfs.gz minimal.iso
 
 build:
 	@echo "Building builder ..."
-	@docker build -t minimal-linux-script .
+	@docker build -t minimal/builder .
 	@echo "Building image ..."
-	@docker run -i -t --name minimal_build minimal-linux-script
+	@docker run -i -t --name minimal_build minimal/builder
 	@echo "Copying image ..."
-	@docker cp minimal_build:/build/minimal_linux_live.iso .
+	@docker cp minimal_build:/build/minimal.iso .
 	@docker cp minimal_build:/build/isoimage/kernel.gz .
 	@docker cp minimal_build:/build/isoimage/rootfs.gz .
 	@docker rm -f minimal_build
