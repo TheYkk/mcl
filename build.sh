@@ -70,12 +70,13 @@ build_rootfs() {
 build_kernel() {
   (
   cd linux-$KERNEL_VERSION
-  make mrproper alldefconfig kvmconfig
+  make mrproper defconfig kvmconfig
   config y BLK_DEV_INITRD
   config y IKCONFIG
   config y IKCONFIG_PROC
   config y DEVTMPFS
   config minimal DEFAULT_HOSTNAME
+  yes "" | make oldconfig
   make bzImage
   cp arch/x86/boot/bzImage ../kernel.gz
   )
