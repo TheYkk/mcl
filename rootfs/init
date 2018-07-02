@@ -9,8 +9,15 @@ mount -t sysfs none /sys
 # Configure host name
 if [ "$HOSTNAME" ]; then
   echo "hostname: $HOSTNAME"
-  /bin/hostname $HOSTNAME
+  hostname $HOSTNAME
 fi
+
+# Configure networking
+ip link set lo up
+ip link set eth0 up
+udhcpc
+
+echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
 
 while true; do
   setsid cttyhack /bin/sh &

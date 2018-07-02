@@ -4,6 +4,7 @@ set -ex
 
 KERNEL_VERSION=4.17.3
 BUSYBOX_VERSION=1.28.4
+DROPBEAR_VERSION=2018.76
 SYSLINUX_VERSION=6.03
 
 build=/build
@@ -19,11 +20,15 @@ download_sources() {
   wget -O busybox.tar.bz2 \
     http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
 
+  wget -O dropbear.tar.bz2 \
+    https://matt.ucc.asn.au/dropbear/dropbear-$DROPBEAR_VERSION.tar.bz2
+
   wget -O syslinux.tar.xz \
     http://kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VERSION.tar.xz
 
   tar -xf kernel.tar.xz
   tar -xf busybox.tar.bz2
+  tar -xf dropbear.tar.bz2
   tar -xf syslinux.tar.xz
 }
 
@@ -34,6 +39,22 @@ build_busybox() {
   sed -i "s/.*CONFIG_STATIC.*/CONFIG_STATIC=y/" .config
   make busybox install
   cp -a _install/* "$rootfs"
+  )
+}
+
+build_dropbear() {
+  (
+  cd dropbear-$DROPBEAR_VERSION
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/man \
+    --enable-static \
+    --disable-zlib \
+    --disable-syslog
+
+  make PROGRAMS="dropbear dbclient dropbearkey scp"
+  make strip
+  make DESTDIR=$rootfs install
   )
 }
 
@@ -49,7 +70,8 @@ build_rootfs() {
 build_kernel() {
   (
   cd linux-$KERNEL_VERSION
-  make mrproper defconfig
+  make mrproper alldefconfig kvmconfig
+  config y BLK_DEV_INITRD
   config y IKCONFIG
   config y IKCONFIG_PROC
   config y DEVTMPFS
@@ -83,6 +105,7 @@ build_iso() {
 
 download_sources
 build_busybox
+build_dropbear
 build_rootfs
 build_kernel
 build_iso
