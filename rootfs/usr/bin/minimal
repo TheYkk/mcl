@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "Minimal version 0.1"
+
+# End of file

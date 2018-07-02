@@ -12,8 +12,8 @@ build:
 	@docker run -i -t --name minimal_build minimal/builder
 	@echo "Copying image ..."
 	@docker cp minimal_build:/build/minimal.iso .
-	@docker cp minimal_build:/build/isoimage/kernel.gz .
-	@docker cp minimal_build:/build/isoimage/rootfs.gz .
+	@docker cp minimal_build:/build/kernel.gz .
+	@docker cp minimal_build:/build/rootfs.gz .
 	@docker rm -f minimal_build
 
 test:

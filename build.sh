@@ -6,57 +6,83 @@ KERNEL_VERSION=4.17.3
 BUSYBOX_VERSION=1.28.4
 SYSLINUX_VERSION=6.03
 
-config() { echo CONFIG_$2=$1 >> .config; }
+build=/build
+rootfs=$build/rootfs/
+isoimage=$build/isoimage/
 
+config() { echo "CONFIG_$2=$1" >> .config; }
 
-wget -O kernel.tar.xz http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
-wget -O busybox.tar.bz2 http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
-wget -O syslinux.tar.xz http://kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VERSION.tar.xz
+download_sources() {
+  wget -O kernel.tar.xz \
+    http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
 
-tar -xvf kernel.tar.xz
-tar -xvf busybox.tar.bz2
-tar -xvf syslinux.tar.xz
+  wget -O busybox.tar.bz2 \
+    http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
 
-mkdir isoimage
+  wget -O syslinux.tar.xz \
+    http://kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VERSION.tar.xz
 
-cd busybox-$BUSYBOX_VERSION
-make distclean defconfig
-sed -i "s/.*CONFIG_STATIC.*/CONFIG_STATIC=y/" .config
-make busybox install
+  tar -xf kernel.tar.xz
+  tar -xf busybox.tar.bz2
+  tar -xf syslinux.tar.xz
+}
 
-cd _install
-rm -f linuxrc
-mkdir dev proc sys
-echo '#!/bin/sh' > init
-echo 'dmesg -n 1' >> init
-echo 'mount -t devtmpfs none /dev' >> init
-echo 'mount -t proc none /proc' >> init
-echo 'mount -t sysfs none /sys' >> init
-echo 'setsid cttyhack /bin/sh' >> init
-chmod +x init
-find . | cpio -R root:root -H newc -o | gzip > ../../isoimage/rootfs.gz
+build_busybox() {
+  (
+  cd busybox-$BUSYBOX_VERSION
+  make distclean defconfig
+  sed -i "s/.*CONFIG_STATIC.*/CONFIG_STATIC=y/" .config
+  make busybox install
+  cp -a _install/* "$rootfs"
+  )
+}
 
-cd ../../linux-$KERNEL_VERSION
-make mrproper defconfig
-config y IKCONFIG
-config y IKCONFIG_PROC
-config y DEVTMPFS
-config minimal DEFAULT_HOSTNAME
-make bzImage
-cp arch/x86/boot/bzImage ../isoimage/kernel.gz
+build_rootfs() {
+  (
+  cd rootfs
+  rm -f linuxrc
+  chmod u+s bin/busybox
+  find . | cpio -R root:root -H newc -o | gzip > ../rootfs.gz
+  )
+}
 
-cd ../isoimage
-cp ../syslinux-$SYSLINUX_VERSION/bios/core/isolinux.bin .
-cp ../syslinux-$SYSLINUX_VERSION/bios/com32/elflink/ldlinux/ldlinux.c32 .
-echo 'default kernel.gz initrd=rootfs.gz append quiet' > ./isolinux.cfg
-xorriso \
-  -as mkisofs \
-  -o ../minimal.iso \
-  -b isolinux.bin \
-  -c boot.cat \
-  -no-emul-boot \
-  -boot-load-size 4 \
-  -boot-info-table \
-  ./
-cd ..
-set +ex
+build_kernel() {
+  (
+  cd linux-$KERNEL_VERSION
+  make mrproper defconfig
+  config y IKCONFIG
+  config y IKCONFIG_PROC
+  config y DEVTMPFS
+  config minimal DEFAULT_HOSTNAME
+  make bzImage
+  cp arch/x86/boot/bzImage ../kernel.gz
+  )
+}
+
+build_iso() {
+  test -d "$isoimage" || mkdir "$isoimage"
+  cp rootfs.gz "$isoimage"
+  cp kernel.gz "$isoimage"
+  cp syslinux-$SYSLINUX_VERSION/bios/core/isolinux.bin "$isoimage"
+  cp syslinux-$SYSLINUX_VERSION/bios/com32/elflink/ldlinux/ldlinux.c32 "$isoimage"
+  echo 'default kernel.gz initrd=rootfs.gz append quiet' > "$isoimage/isolinux.cfg"
+
+  (
+  cd "$isoimage"
+  xorriso \
+    -as mkisofs \
+    -o ../minimal.iso \
+    -b isolinux.bin \
+    -c boot.cat \
+    -no-emul-boot \
+    -boot-load-size 4 \
+    -boot-info-table \
+    ./
+  )
+}
+
+download_sources
+build_busybox
+build_rootfs
+build_kernel
+build_iso
