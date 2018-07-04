@@ -39,7 +39,7 @@ udhcpc
 dropbear -B -R > /var/log/dropbear.log 2>&1
 
 # Start docker
-docker -d -p /var/run/docker.pid > /var/lib/docker.log 2>&1 &
+DOCKER_RAMDISK=true docker -d -p /var/run/docker.pid > /var/lib/docker.log 2>&1 &
 
 echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
 

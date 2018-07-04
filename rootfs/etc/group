@@ -21,6 +21,6 @@ tape::19:
 scanner::20:
 cdrom::21:
 input::22:
-www::15:
+docker::23:root,bin,daemon
 nobody::99:
 users::100:

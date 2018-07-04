@@ -3,6 +3,7 @@
 set -ex
 
 KERNEL_VERSION=4.17.3
+MUSL_VERSION=1.1.19
 BUSYBOX_VERSION=1.28.4
 DROPBEAR_VERSION=2018.76
 SYSLINUX_VERSION=6.03
@@ -18,6 +19,9 @@ config() { echo "CONFIG_$2=$1" >> .config; }
 download_sources() {
   wget -O kernel.tar.xz \
     http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
+
+  wget -O musl.tar.gz \
+    http://www.musl-libc.org/releases/musl-$MUSL_VERSION.tar.gz
 
   wget -O busybox.tar.bz2 \
     http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
@@ -35,6 +39,7 @@ download_sources() {
     https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz
 
   tar -xf kernel.tar.xz
+  tar -xf musl.tar.gz
   tar -xf busybox.tar.bz2
   tar -xf dropbear.tar.bz2
   tar -xf syslinux.tar.xz
@@ -42,6 +47,18 @@ download_sources() {
   tar -xf docker.tgz
 }
 
+build_musl() {
+  (
+  cd musl-$MUSL_VERSION
+  ./configure \
+    --prefix=/usr
+
+  make
+  make DESTDIR=$rootfs install
+  )
+}
+
+  
 build_busybox() {
   (
   cd busybox-$BUSYBOX_VERSION
@@ -75,8 +92,8 @@ build_iptables() {
     --prefix=/usr \
     --enable-libipq \
     --disable-nftables \
-    --enable-static \
-    --disable-shared
+    --enable-static
+
   make
   make DESTDIR=$rootfs install
   )
@@ -170,6 +187,7 @@ build_iso() {
 }
 
 download_sources
+build_musl
 build_busybox
 build_dropbear
 build_iptables
