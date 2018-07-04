@@ -1,3 +1,3 @@
 # Minimal
 
-Document me...
+![Screenshot](screenshot.png)

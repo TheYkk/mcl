@@ -2,9 +2,27 @@
 
 . /etc/rc.conf
 
+# Mount dev,proc,sys
 mount -t devtmpfs none /dev
 mount -t proc none /proc
 mount -t sysfs none /sys
+mkdir /dev/pts
+mount -t devpts none /dev/pts
+
+# mount cgroup
+(
+mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
+cd /sys/fs/cgroup
+
+for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
+  mkdir -p $sys
+  if ! mountpoint -q $sys; then
+    if ! mount -n -t cgroup -o $sys cgroup $sys; then
+      rmdir $sys || true
+    fi
+  fi
+done
+)
 
 # Configure host name
 if [ "$HOSTNAME" ]; then
@@ -17,8 +35,15 @@ ip link set lo up
 ip link set eth0 up
 udhcpc
 
+# Start dropbear (SSHD)
+dropbear -B -R > /var/log/dropbear.log 2>&1
+
+# Start docker
+docker -d -p /var/run/docker.pid > /var/lib/docker.log 2>&1 &
+
 echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
 
+# shell
 while true; do
   setsid cttyhack /bin/sh &
   wait
