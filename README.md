@@ -14,9 +14,17 @@ which adds the following features:
 * Ships in a ~50MB ISO
 * Boots in ~1s
 
-On boot it has a memory idle footprint of about ~64MB.
+## Requirements
 
-Things left to do or improve:
+* 192MB of Memory to boot
+* Uses ~64MB at idle
+* VirtualBox, QEMU, Proxmox, OpenStack, Cloud Provider or:
+
+Hardware:
+
+*Support coming soon...*
+
+## Things left to do or improve:
 
 * Do more testing
 * Polish things up a bit
