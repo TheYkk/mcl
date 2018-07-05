@@ -16,6 +16,12 @@ which adds the following features:
 * Ships in a ~50MB ISO
 * Boots in ~1s
 
+**WARNING:**
+
+> This is still highly experimental and only recently developed.
+> Use at your own risk. Your milage may vary.
+> Absolutely no warraty or support.
+
 ## Requirements
 
 * 192MB of Memory to boot
@@ -38,6 +44,7 @@ Hardware:
 
 **Contributors welcome!**
 
-> Currently not licensed.
-> Use at your own risk.
-> Absolutely no warraty or support.
+## License
+
+This project is licensed under the terms of the MIT license.
+(*Original license  GPLv3 from fork of [minimal-linux-script](https://github.com/ivandavidov/minimal-linux-script)*)
