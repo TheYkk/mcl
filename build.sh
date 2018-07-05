@@ -14,7 +14,15 @@ build=/build
 rootfs=$build/rootfs/
 isoimage=$build/isoimage/
 
-config() { echo "CONFIG_$2=$1" >> .config; }
+debug() { echo "Dropping into a shell for debugging ..."; /bin/sh; }
+
+config() { 
+  if grep "CONFIG_$2" .config; then
+    sed -i "s|.*CONFIG_$2.*|CONFIG_$2=$1|" .config
+  else
+    echo "CONFIG_$2=$1" >> .config
+  fi
+}
 
 download_sources() {
   wget -O kernel.tar.xz \
@@ -63,9 +71,33 @@ build_busybox() {
   (
   cd busybox-$BUSYBOX_VERSION
   make distclean defconfig
-  sed -i "s/.*CONFIG_STATIC.*/CONFIG_STATIC=y/" .config
+  config y STATIC
+  config n INCLUDE_SUSv2
+  config y INSTALL_NO_USR
+  config "\"$rootfs\"" PREFIX
+  config y FEATURE_EDITING_VI
+  config y TUNE2FS
+  config n BOOTCHARTD
+  config n INIT
+  config n LINUXRC
+  config y FEATURE_GPT_LABEL
+  config n LPD
+  config n LPR
+  config n LPQ
+  config n RUNSV
+  config n RUNSVDIR
+  config n SV
+  config n SVC
+  config n SVLOGD
+  config n HUSH
+  config n CHAT
+  config n CONSPY
+  config n RUNLEVEL
+  config n PIPE_PROGRESS
+  config n RUN_PARTS
+  config n START_STOP_DAEMON
+  yes "" | make oldconfig
   make busybox install
-  cp -a _install/* "$rootfs"
   )
 }
 
@@ -107,8 +139,6 @@ install_docker() {
 build_rootfs() {
   (
   cd rootfs
-  rm -f linuxrc
-  chmod u+s bin/busybox
   find . | cpio -R root:root -H newc -o | gzip > ../rootfs.gz
   )
 }
