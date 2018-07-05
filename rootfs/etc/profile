@@ -14,9 +14,12 @@ if [ ! -f ~/.inputrc ]; then
     export INPUTRC="/etc/inputrc"
 fi
 
+export EDITOR="vi"
 export LESS="-R"
 export PS1="\[\033[1m\]\\$ \[\033[0m\]"
 export PS2="\[\033[1m\]> \[\033[0m\]"
+
+set -o vi
 
 umask 022
 
