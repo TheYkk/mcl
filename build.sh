@@ -100,6 +100,7 @@ build_iptables() {
 }
 
 install_docker() {
+  upx docker/*
   mv docker/* $rootfs/usr/bin/
 }
 
