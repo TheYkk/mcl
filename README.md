@@ -6,6 +6,8 @@
 This is a fork of (*not backwards portable*) of [minimal-linux-script](https://github.com/ivandavidov/minimal-linux-script)
 which adds the following features:
 
+## Features
+
 * Docker based build environment (*CI friendly, ~20m build time*)
 * Busybox user tools
 * Dropbear ssh server
