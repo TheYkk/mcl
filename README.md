@@ -1,5 +1,7 @@
 # Minimal Container Linux (MCL)
 
+[![Build Status](https://travis-ci.org/prologic/minimal-container-linux.svg)](https://travis-ci.org/prologic/minimal-container-linux)
+
 > Naming is hard. This is as good a project name as it gets :)
 > Suggestions welcome!
 
