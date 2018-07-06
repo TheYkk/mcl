@@ -257,13 +257,16 @@ build_all() {
   build_kernel
 
   build_rootfs
+
+  download_syslinux
   build_iso
 }
 
 repack() {
-  download_syslinux
   sync_rootfs
   build_rootfs
+
+  download_syslinux
   build_iso
 }
 
