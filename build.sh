@@ -253,8 +253,10 @@ build_all() {
   download_docker
   install_docker
 
-  build_rootfs
+  download_kernel
   build_kernel
+
+  build_rootfs
   build_iso
 }
 
