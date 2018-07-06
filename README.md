@@ -34,11 +34,9 @@ Hardware:
 
 ## Things left to do or improve:
 
-* Do more testing
-* Polish things up a bit
-* Rename the project
-* Publish regular images
-* Add cloud-init support
+* Do more testing ($4)
+* Publish regular images (#4)
+* Add cloud-init support (#2)
 
 ![Screenshot](screenshot.png)
 
