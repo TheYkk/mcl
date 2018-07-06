@@ -19,8 +19,8 @@ which adds the following features:
 **WARNING:**
 
 > This is still highly experimental and only recently developed.
-> Use at your own risk. Your milage may vary.
-> Absolutely no warraty or support.
+> Use at your own risk. Your mileage may vary.
+> Absolutely no warranty or support.
 
 ## Requirements
 
@@ -34,7 +34,7 @@ which adds the following features:
 
 ## Contributing
 
-Contributors welcome! Please file an issue or PR if you find bugs or improvements. Please help us test as well! Feedback is much appreicated.
+Contributors welcome! Please file an issue or PR if you find bugs or improvements. Please help us test as well! Feedback is much appreciated.
 
 ## License
 
