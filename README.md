@@ -28,19 +28,13 @@ which adds the following features:
 * Uses ~64MB at idle
 * VirtualBox, QEMU, Proxmox, OpenStack, Cloud Provider or:
 
-Hardware:
-
-*Support coming soon...*
-
-## Things left to do or improve:
-
-* Do more testing ($4)
-* Publish regular images (#4)
-* Add cloud-init support (#2)
+*Hardware support coming soon...*
 
 ![Screenshot](screenshot.png)
 
-**Contributors welcome!**
+## Contributing
+
+Contributors welcome! Please file an issue or PR if you find bugs or improvements. Please help us test as well! Feedback is much appreicated.
 
 ## License
 
