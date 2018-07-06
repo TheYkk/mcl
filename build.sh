@@ -113,7 +113,8 @@ build_dropbear() {
     --disable-syslog
 
   make PROGRAMS="dropbear dbclient dropbearkey scp" strip
-  make DESTDIR=$rootfs install
+  make DESTDIR=$rootfs PROGRAMS="dropbear dbclient dropbearkey scp" install
+  ln -sf /usr/bin/dbclient $rootfs/usr/bin/ssh
   )
 }
 

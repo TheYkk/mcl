@@ -2,6 +2,8 @@
 
 . /etc/rc.conf
 
+export PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+
 # Mount dev,proc,sys
 mount -t devtmpfs none /dev
 mount -t proc none /proc
@@ -39,7 +41,7 @@ udhcpc -f -p /var/run/udhcpc.pid > /var/log/udhcpc.log 2>&1 &
 dropbear -B -R > /var/log/dropbear.log 2>&1
 
 # Start docker
-DOCKER_RAMDISK=true docker -d -p /var/run/docker.pid > /var/lib/docker.log 2>&1 &
+DOCKER_RAMDISK=true dockerd -p /var/run/docker.pid > /var/log/docker.log 2>&1 &
 
 echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
 
