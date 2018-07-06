@@ -24,34 +24,45 @@ config() {
   fi
 }
 
-download_sources() {
-  wget -O kernel.tar.xz \
-    http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
-
-  wget -O musl.tar.gz \
-    http://www.musl-libc.org/releases/musl-$MUSL_VERSION.tar.gz
-
-  wget -O busybox.tar.bz2 \
-    http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
-
-  wget -O dropbear.tar.bz2 \
-    https://matt.ucc.asn.au/dropbear/dropbear-$DROPBEAR_VERSION.tar.bz2
-
-  wget -O syslinux.tar.xz \
+download_syslinux() {
+  wget -q -O syslinux.tar.xz \
     http://kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VERSION.tar.xz
+  tar -xf syslinux.tar.xz
+}
 
-  wget -O iptables.tar.bz2 \
+download_kernel() {
+  wget -q -O kernel.tar.xz \
+    http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
+  tar -xf kernel.tar.xz
+}
+
+download_musl() {
+  wget -q -O musl.tar.gz \
+    http://www.musl-libc.org/releases/musl-$MUSL_VERSION.tar.gz
+  tar -xf musl.tar.gz
+}
+
+download_busybox() {
+  wget -q -O busybox.tar.bz2 \
+    http://busybox.net/downloads/busybox-$BUSYBOX_VERSION.tar.bz2
+  tar -xf busybox.tar.bz2
+}
+
+download_dropbear() {
+  wget -q -O dropbear.tar.bz2 \
+    https://matt.ucc.asn.au/dropbear/dropbear-$DROPBEAR_VERSION.tar.bz2
+  tar -xf dropbear.tar.bz2
+}
+
+download_iptables() {
+  wget -q -O iptables.tar.bz2 \
     https://netfilter.org/projects/iptables/files/iptables-$IPTABLES_VERSION.tar.bz2
+  tar -xf iptables.tar.bz2
+}
 
+download_docker() {
   wget -O docker.tgz \
     https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz
-
-  tar -xf kernel.tar.xz
-  tar -xf musl.tar.gz
-  tar -xf busybox.tar.bz2
-  tar -xf dropbear.tar.bz2
-  tar -xf syslinux.tar.xz
-  tar -xf iptables.tar.bz2
   tar -xf docker.tgz
 }
 
@@ -133,7 +144,6 @@ build_iptables() {
 }
 
 install_docker() {
-  upx docker/*
   mv docker/* $rootfs/usr/bin/
 }
 
@@ -141,6 +151,15 @@ build_rootfs() {
   (
   cd rootfs
   find . | cpio -R root:root -H newc -o | gzip > ../rootfs.gz
+  )
+}
+
+sync_rootfs() {
+  (
+  mkdir rootfs.old
+  cd rootfs.old
+  zcat $build/rootfs.gz | cpio -idm
+  rsync -aru . $rootfs
   )
 }
 
@@ -218,12 +237,39 @@ build_iso() {
   )
 }
 
-download_sources
-build_musl
-build_busybox
-build_dropbear
-build_iptables
-install_docker
-build_rootfs
-build_kernel
-build_iso
+build_all() {
+  download_musl
+  build_musl
+
+  download_busybox
+  build_busybox
+
+  download_dropbear
+  build_dropbear
+
+  download_iptables
+  build_iptables
+
+  download_docker
+  install_docker
+
+  build_rootfs
+  build_kernel
+  build_iso
+}
+
+repack() {
+  download_syslinux
+  sync_rootfs
+  build_rootfs
+  build_iso
+}
+
+case "${1}" in
+  repack)
+    repack
+    ;;
+  *)
+    build_all
+    ;;
+esac

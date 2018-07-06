@@ -16,5 +16,15 @@ build:
 	@docker cp minimal_build:/build/rootfs.gz .
 	@docker rm -f minimal_build
 
+repack:
+	@echo "Building builder ..."
+	@docker build -t minimal/builder .
+	@echo "Building image ..."
+	@docker run -i -t --name minimal_build minimal/builder repack
+	@echo "Copying image ..."
+	@docker cp minimal_build:/build/minimal.iso .
+	@docker cp minimal_build:/build/rootfs.gz .
+	@docker rm -f minimal_build
+
 test:
 	@./test.sh -g
