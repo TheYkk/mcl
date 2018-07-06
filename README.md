@@ -1,4 +1,4 @@
-# Minimal Container Linux OS
+# Minimal Container Linux (MCL)
 
 > Naming is hard. This is as good a project name as it gets :)
 > Suggestions welcome!
