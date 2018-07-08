@@ -3,9 +3,11 @@ language: generic
 services:
   - docker
 script:
-- make
+  - make
 deploy:
   provider: releases
+  overwrite: true
+  skip_cleanup: true
   api_key:
     secure: rQy0BuozYCFDNTdbB7t4Zq/2yplcF6fTAao5qbP4avQ9RLsyydtt7r3FU2qPlmtDr3K514PfD/1W+5K7s+8Kh791ttlMZKYEPsi8VxYT6uUihSORx1XLl5ytyctEiPNuZTHgu0FXtL9lNUOdDKW4ISx6lN7C6yKBNXCZJSKER6hBxkM5r2ZG/ykw3pTQQvhysbjgPKrBzSRlErOfkbV4errEgvwPPEOzrfOxRxsIP3qSUWqHoW1g+d+89kGxXgrncZR0ZgpKu52ZY/X8Drc2MHN2MviHEk7o3LCHPNxbBolLz6l8AyTxTMZhaG8tXpIUDW5gYecGJRjgpjYbCJX8K+OKItgDjBwo0x/dI7wTiQoQ4fnvIahbMsLVwyqtrQVNV4+OhnaaJSwo8+/NAK4PD1vyZ85hdki7wbTv47UFihIqpnKAARzYNTU2i3qdQYAlWFKzUA0qpcNW2b7hbxq1e8LUJwUuluw5tZamb1ZmERw05OBYGYNv/cofFarNbIamCQkKBdwdxD41R9rR6pc1tW2WYCi3nbuTTvdjqmp4CB+iImVRcZxFUv3uyYSsBvG+pf1MJZIcDWcv/rnVrYE3r3Dly6gCyXe6t2bEGiW8gGniJSHHRbEfKcatNqQ/U3/DdXiGPuyPKfJredSYGgFZBpAtgN/fYN0xHRWLEp17Kns=
   file:
