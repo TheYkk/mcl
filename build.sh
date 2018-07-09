@@ -173,7 +173,18 @@ build_kernel() {
   config y IKCONFIG
   config y IKCONFIG_PROC
   config y DEVTMPFS
+  config n DEBUG_KERNEL
   config minimal DEFAULT_HOSTNAME
+
+  # Network Driers
+  config y VIRTIO
+  config y VIRTIO_PCI
+  config y VIRTIO_MMIO
+  config y VIRTIO_CONSOLE
+  config y VIRTIO_BLK
+  config y VIRTIO_NET
+  config y 8139TOO
+  config y 8139CP
 
   # Docker Basics
   config y NAMESPACES

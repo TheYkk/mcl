@@ -1,5 +1,5 @@
 #!/bin/sh
 
-echo "Minimal version 0.1"
+echo "Minimal Container Linux (MCL) v0.0.3"
 
 # End of file
