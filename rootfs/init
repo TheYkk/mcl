@@ -35,12 +35,17 @@ fi
 # Configure networking
 ip link set lo up
 ip link set eth0 up
+
+# Run cloudinit (if available)
+/usr/bin/cloudinit > /var/log/cloudinit.log &
+
+# Start udhcpc (DHCP)
 udhcpc -f -p /var/run/udhcpc.pid > /var/log/udhcpc.log 2>&1 &
 
 # Start dropbear (SSHD)
 dropbear -B -R > /var/log/dropbear.log 2>&1
 
-# Start docker
+# Start dockerd (Containers)
 DOCKER_DATA="$(blkid | grep 'LABEL="DOCKER_DATA"' | awk -F ':' '{ print $1 }')"
 if [ "$DOCKER_DATA" ]; then
   mkdir -p /var/lib/docker
