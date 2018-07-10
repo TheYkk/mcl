@@ -14,6 +14,7 @@ build:
 	@docker cp minimal_build:/build/minimal.iso .
 	@docker cp minimal_build:/build/kernel.gz .
 	@docker cp minimal_build:/build/rootfs.gz .
+	@docker cp minimal_build:/build/clouddrive.iso .
 	@docker rm -f minimal_build
 
 repack:
@@ -24,6 +25,7 @@ repack:
 	@echo "Copying image ..."
 	@docker cp minimal_build:/build/minimal.iso .
 	@docker cp minimal_build:/build/rootfs.gz .
+	@docker cp minimal_build:/build/clouddrive.iso .
 	@docker rm -f minimal_build
 
 test:

@@ -248,6 +248,10 @@ build_iso() {
   )
 }
 
+build_clouddrive() {
+  xorrisofs -J -r -V cidata -o ./clouddrive.iso clouddrive/
+}
+
 build_all() {
   download_musl
   build_musl
@@ -271,6 +275,7 @@ build_all() {
 
   download_syslinux
   build_iso
+  build_clouddrive
 }
 
 repack() {
@@ -279,6 +284,7 @@ repack() {
 
   download_syslinux
   build_iso
+  build_clouddrive
 }
 
 case "${1}" in

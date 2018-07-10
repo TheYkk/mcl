@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir -p /root/.ssh/
+cat >> /root/.ssh/authorized_keys <<EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDo9UKNJ6X+LUxY9E2Ne3IxluaBTQWE0nCgyVfPHgSJhrI1HDiKcwc2S10kzMOnWco47sOb0Te4/tOHh+jlBbSTiW2CqQpIkZ8Bz4d1VXIPpUCUreP8gSuWxWNrdiU3TpfaeLSn0BkQhssvUhooAVPcRlgpmLETeGVlY1G2Qc1YcrQusz5E/5vLp4wkycZnGvHJ9+R5M2gn12Wnj+Fg8xMdqsvKmtBasPTX9YcJxVj/CBJZUB5impNg7ml9mESGDOpU11H9UWLUiDjIOmiDu3baNUiUmUnrUG44HBnstvbglEEOjsywML9xB81iZkA8RPluFpMU/+BWPI3nIKyRZn2p prologic@Jamess-MacBook.local
+EOF
