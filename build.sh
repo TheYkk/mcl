@@ -147,9 +147,39 @@ install_docker() {
   mv docker/* $rootfs/usr/bin/
 }
 
+write_metadata() {
+  # Setup /etc/os-release with some nice contents
+  latestTag="$(git describe --abbrev=0 --tags)"
+  latestRev="$(git rev-parse --short HEAD)"
+  fullVersion="$(echo "${latestTag}" | cut -c2-)"
+  majorVersion="$(echo "${latestTag}" | cut -c2- | cut -d '.' -f 1,2)"
+  cat > $rootfs/etc/os-release <<EOF
+NAME=minimcal-container-linuux
+VERSION=$fullVersion
+ID=mcl
+ID_LIKE=tcl
+VERSION_ID=$fullVersion
+PRETTY_NAME="Minimal Container Linux $fullVersion (TCL $majorVersion); $latestRev"
+ANSI_COLOR="1;34"
+HOME_URL="https://mcl.host/"
+SUPPORT_URL="https://github.com/prologic/minimal-container-linux"
+BUG_REPORT_URL="https://github.com/prologic/minimal-container-linux/issues"
+EOF
+
+  cat > $rootfs/usr/bin/mcl <<EOF
+#!/bin/sh
+
+echo "Minimal Container Linux (MCL) v${fullVersion} @ ${latestRev}"
+
+# End of file
+EOF
+chmod +x $rootfs/usr/bin/mcl
+}
+
 build_rootfs() {
   (
-  cd rootfs
+  cd $rootfs
+  write_metadata
   find . | cpio -R root:root -H newc -o | gzip > ../rootfs.gz
   )
 }
@@ -281,7 +311,6 @@ build_all() {
 repack() {
   sync_rootfs
   build_rootfs
-
   download_syslinux
   build_iso
   build_clouddrive

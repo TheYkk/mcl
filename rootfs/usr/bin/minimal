@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo "Minimal Container Linux (MCL) v0.0.4"
-
-# End of file
