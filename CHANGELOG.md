@@ -1,4 +1,13 @@
 
+<a name="v0.0.5"></a>
+## [v0.0.5](https://github.com/prologic/minimal-container-linux/compare/v0.0.4...v0.0.5) (2018-07-19)
+
+### Features
+
+* Added CHANGELOG
+* Added `/etc/os-release` file for LSB compat ([#14](https://github.com/prologic/minimal-container-linux/issues/14))
+
+
 <a name="v0.0.4"></a>
 ## [v0.0.4](https://github.com/prologic/minimal-container-linux/compare/v0.0.3...v0.0.4) (2018-07-09)
 
