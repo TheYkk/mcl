@@ -10,6 +10,8 @@ SYSLINUX_VERSION=6.03
 IPTABLES_VERSION=1.6.2
 DOCKER_VERSION=18.03.1-ce
 
+NUM_JOBS="$(grep ^processor /proc/cpuinfo | wc -l)"
+
 build=/build
 rootfs=$build/rootfs/
 isoimage=$build/isoimage/
@@ -81,7 +83,7 @@ build_musl() {
 build_busybox() {
   (
   cd busybox-$BUSYBOX_VERSION
-  make distclean defconfig
+  make distclean defconfig -j $NUM_JOBS
   config y STATIC
   config n INCLUDE_SUSv2
   config y INSTALL_NO_USR
@@ -108,7 +110,9 @@ build_busybox() {
   config n RUN_PARTS
   config n START_STOP_DAEMON
   yes "" | make oldconfig
-  make busybox install
+  make \
+    EXTRA_CFLAGS="-Os -s -fno-stack-protector -U_FORTIFY_SOURCE" \
+    busybox install -j $NUM_JOBS
   )
 }
 
@@ -123,8 +127,11 @@ build_dropbear() {
     --disable-wtmp \
     --disable-syslog
 
-  make PROGRAMS="dropbear dbclient dropbearkey scp" strip
-  make DESTDIR=$rootfs PROGRAMS="dropbear dbclient dropbearkey scp" install
+  make \
+    EXTRA_CFLAGS="-Os -s -fno-stack-protector -U_FORTIFY_SOURCE" \
+    DESTDIR=$rootfs \
+    PROGRAMS="dropbear dbclient dropbearkey scp" \
+    strip install -j $NUM_JOBS
   ln -sf /usr/bin/dbclient $rootfs/usr/bin/ssh
   )
 }
@@ -138,7 +145,9 @@ build_iptables() {
     --disable-nftables \
     --enable-static
 
-  make
+  make \
+    EXTRA_CFLAGS="-Os -s -fno-stack-protector -U_FORTIFY_SOURCE" \
+    -j $NUM_JOBS
   make DESTDIR=$rootfs install
   )
 }
@@ -178,9 +187,8 @@ chmod +x $rootfs/usr/bin/mcl
 
 build_rootfs() {
   (
-  cd $rootfs
-  write_metadata
-  find . | cpio -R root:root -H newc -o | gzip > ../rootfs.gz
+  cd rootfs
+  find . | cpio -R root:root -H newc -o | gzip -9 > ../rootfs.gz
   )
 }
 
@@ -196,7 +204,13 @@ sync_rootfs() {
 build_kernel() {
   (
   cd linux-$KERNEL_VERSION
-  make mrproper defconfig kvmconfig
+  make mrproper defconfig kvmconfig -j $NUM_JOBS
+
+  # Disable debug symbols in kernel => smaller kernel binary.
+  sed -i "s/^CONFIG_DEBUG_KERNEL.*/\\# CONFIG_DEBUG_KERNEL is not set/" .config
+
+  # Enable the EFI stub
+  sed -i "s/.*CONFIG_EFI_STUB.*/CONFIG_EFI_STUB=y/" .config
 
   # Basic Config
   config y BLK_DEV_INITRD
@@ -204,7 +218,7 @@ build_kernel() {
   config y IKCONFIG_PROC
   config y DEVTMPFS
   config n DEBUG_KERNEL
-  config minimal DEFAULT_HOSTNAME
+  config mcl DEFAULT_HOSTNAME
 
   # Network Driers
   config y VIRTIO
@@ -251,7 +265,9 @@ build_kernel() {
   config y OVERLAY_FS
 
   yes "" | make oldconfig
-  make bzImage
+  make \
+    CFLAGS="-Os -s -fno-stack-protector -U_FORTIFY_SOURCE" \
+    bzImage -j $NUM_JOBS
   cp arch/x86/boot/bzImage ../kernel.gz
   )
 }
@@ -268,7 +284,7 @@ build_iso() {
   cd "$isoimage"
   xorriso \
     -as mkisofs \
-    -o ../minimal.iso \
+    -o ../mcl.iso \
     -b isolinux.bin \
     -c boot.cat \
     -no-emul-boot \

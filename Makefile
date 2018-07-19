@@ -3,30 +3,30 @@
 all: build
 
 clean:
-	@rm -rf kernel.gz rootfs.gz minimal.iso
+	@rm -rf *.gz *.iso
 
 build:
 	@echo "Building builder ..."
-	@docker build -t minimal/builder .
+	@docker build -t mcl/builder .
 	@echo "Building image ..."
-	@docker run -i -t --name minimal_build minimal/builder
+	@docker run -i -t --name mcl_build mcl/builder
 	@echo "Copying image ..."
-	@docker cp minimal_build:/build/minimal.iso .
-	@docker cp minimal_build:/build/kernel.gz .
-	@docker cp minimal_build:/build/rootfs.gz .
-	@docker cp minimal_build:/build/clouddrive.iso .
-	@docker rm -f minimal_build
+	@docker cp mcl_build:/build/mcl.iso .
+	@docker cp mcl_build:/build/kernel.gz .
+	@docker cp mcl_build:/build/rootfs.gz .
+	@docker cp mcl_build:/build/clouddrive.iso .
+	@docker rm -f mcl_build
 
 repack:
 	@echo "Building builder ..."
-	@docker build -t minimal/builder .
+	@docker build -t mcl/builder .
 	@echo "Building image ..."
-	@docker run -i -t --name minimal_build minimal/builder repack
+	@docker run -i -t --name mcl_build mcl/builder repack
 	@echo "Copying image ..."
-	@docker cp minimal_build:/build/minimal.iso .
-	@docker cp minimal_build:/build/rootfs.gz .
-	@docker cp minimal_build:/build/clouddrive.iso .
-	@docker rm -f minimal_build
+	@docker cp mcl_build:/build/mcl.iso .
+	@docker cp mcl_build:/build/rootfs.gz .
+	@docker cp mcl_build:/build/clouddrive.iso .
+	@docker rm -f mcl_build
 
 test:
 	@./test.sh -g
