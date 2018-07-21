@@ -317,6 +317,7 @@ build_all() {
   download_kernel
   build_kernel
 
+  write_metadata
   build_rootfs
 
   download_syslinux
@@ -326,6 +327,7 @@ build_all() {
 
 repack() {
   sync_rootfs
+  write_metadata
   build_rootfs
   download_syslinux
   build_iso
