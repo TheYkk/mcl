@@ -1,4 +1,12 @@
 
+<a name="v0.0.7"></a>
+## [v0.0.7](https://github.com/prologic/minimal-container-linux/compare/v0.0.6...v0.0.7) (2018-07-21)
+
+### Bug Fixes
+
+* Fixed /etc/os-release and /usr/bin/mcl
+
+
 <a name="v0.0.6"></a>
 ## [v0.0.6](https://github.com/prologic/minimal-container-linux/compare/v0.0.5...v0.0.6) (2018-07-20)
 
