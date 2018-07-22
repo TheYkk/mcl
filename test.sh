@@ -25,7 +25,7 @@ else
 fi
 
 if (( gui == 1 )); then
-  qemu-system-x86_64 -m 512M -boot d -cdrom mcl.iso $network
+  qemu-system-x86_64 -m 512M -boot d -cdrom mcl.iso -device virtio-rng-pci $network
 else
-  qemu-system-x86_64 -m 512M -boot d -nographic -cdrom mcl.iso $network
+  qemu-system-x86_64 -m 512M -boot d -nographic -cdrom mcl.iso -device virtio-rng-pci $network
 fi

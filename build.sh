@@ -7,6 +7,7 @@ MUSL_VERSION=1.1.19
 BUSYBOX_VERSION=1.28.4
 DROPBEAR_VERSION=2018.76
 SYSLINUX_VERSION=6.03
+RNGTOOLS_VERSION=5
 IPTABLES_VERSION=1.6.2
 DOCKER_VERSION=18.03.1-ce
 
@@ -56,6 +57,12 @@ download_dropbear() {
   tar -xf dropbear.tar.bz2
 }
 
+download_rngtools() {
+  wget -q -O rngtools.tar.gz \
+    https://downloads.sourceforge.net/sourceforge/gkernel/rng-tools-$RNGTOOLS_VERSION.tar.gz
+  tar -xf rngtools.tar.gz
+}
+
 download_iptables() {
   wget -q -O iptables.tar.bz2 \
     https://netfilter.org/projects/iptables/files/iptables-$IPTABLES_VERSION.tar.bz2
@@ -63,7 +70,7 @@ download_iptables() {
 }
 
 download_docker() {
-  wget -O docker.tgz \
+  wget -q -O docker.tgz \
     https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz
   tar -xf docker.tgz
 }
@@ -136,6 +143,18 @@ build_dropbear() {
   )
 }
 
+build_rngtools() {
+  (
+  cd rng-tools-$RNGTOOLS_VERSION
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/sbin \
+    CFLAGS="-static" LIBS="-l argp"
+  make
+  make DESTDIR=$rootfs install
+  )
+}
+
 build_iptables() {
   (
   cd iptables-$IPTABLES_VERSION
@@ -188,6 +207,8 @@ chmod +x $rootfs/usr/bin/mcl
 build_rootfs() {
   (
   cd rootfs
+  rm -rf usr/man
+  rm -rf usr/include
   find . | cpio -R root:root -H newc -o | gzip -9 > ../rootfs.gz
   )
 }
@@ -219,6 +240,9 @@ build_kernel() {
   config y DEVTMPFS
   config n DEBUG_KERNEL
   config mcl DEFAULT_HOSTNAME
+
+  # RNG
+  config y HW_RANDOM_VIRTIO
 
   # Network Driers
   config y VIRTIO
@@ -307,6 +331,9 @@ build_all() {
 
   download_dropbear
   build_dropbear
+
+  download_rngtools
+  build_rngtools
 
   download_iptables
   build_iptables
