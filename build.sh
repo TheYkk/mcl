@@ -207,8 +207,14 @@ chmod +x $rootfs/usr/bin/mcl
 build_rootfs() {
   (
   cd rootfs
-  rm -rf usr/man
+
+  # Cleanup rootfs
+  find . -type f -name '.empty' -size 0c -delete
+  rm -rf usr/man usr/share/man
+  rm -rf usr/lib/pkgconfig
   rm -rf usr/include
+
+  # Archive rootfs
   find . | cpio -R root:root -H newc -o | gzip -9 > ../rootfs.gz
   )
 }
