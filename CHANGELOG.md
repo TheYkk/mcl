@@ -1,4 +1,16 @@
 
+<a name="v0.0.11"></a>
+## [v0.0.11](https://github.com/prologic/minimal-container-linux/compare/v0.0.10...v0.0.11) (2019-01-24)
+
+### Features
+
+* Added new keyword to chklog template config
+
+### Updates
+
+* Updated to latest versions of packages
+
+
 <a name="v0.0.10"></a>
 ## [v0.0.10](https://github.com/prologic/minimal-container-linux/compare/v0.0.9...v0.0.10) (2019-01-23)
 
@@ -83,4 +95,12 @@
 * Added simple scripts for generic automation.
 * Added screenshot.
 * Added Extra Parameter
+
+### Updates
+
+* Updated TODO
+* Updated README
+* Updated .gitignore
+* Updated screenshot
+* Updated Linux Version to 4.7.2
 
