@@ -9,10 +9,12 @@ options:
       Type:
         - Added
         - Fixed
+        - Updated
         - Documented
   commit_groups:
     title_maps:
       Added: Features
+      Updated: Updates
       Fixed: Bug Fixes
       Documented: Documentation
   header:
