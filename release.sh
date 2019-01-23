@@ -1,7 +1,32 @@
 #!/bin/sh
 
-git-chglog --next-tag=v0.0.6 --output CHANGELOG.md
-git ci -a -m "Relase v0.0.6"
+# Get the highest tag number
+VERSION="$(git describe --abbrev=0 --tags)"
+VERSION=${VERSION:-'0.0.0'}
+
+# Get number parts
+MAJOR="${VERSION%%.*}"; VERSION="${VERSION#*.}"
+MINOR="${VERSION%%.*}"; VERSION="${VERSION#*.}"
+PATCH="${VERSION%%.*}"; VERSION="${VERSION#*.}"
+
+# Increase version
+PATCH=$((PATCH+1))
+
+TAG="${1}"
+
+if [ "${TAG}" = "" ]; then
+  TAG="${MAJOR}.${MINOR}.${PATCH}"
+fi
+
+echo "Releasing ${TAG} ..."
+
+git-chglog --next-tag="${TAG}" --output CHANGELOG.md
+git ci -a -m "Relase ${TAG}"
 git push
-github-release prologic/minimal-container-linux v0.0.6 master "$(git-chglog --next-tag v0.0.6 v0.0.6 | tail -n+5)" ""
+github-release release \
+  -u prologic \
+  -r minimal-container-linux \
+  -t "${TAG}"  \
+  -n "${TAG}" \
+  d "$(git-chglog --next-tag "${TAG}" "${TAG}" | tail -n+5)"
 git pull --tags
