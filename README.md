@@ -16,7 +16,7 @@ which adds the following features:
 * Docker CE container runtime
 * Full Networking support including DHCP
 * Ships in a ~50MB ISO
-* Boots in ~5s
+* Boots in ~1s
 
 **WARNING:**
 
@@ -26,7 +26,7 @@ which adds the following features:
 
 ## Requirements
 
-* 384M of Memory to boot (*recommend 512M*)
+* 512M Memory
 * VirtualBox, QEMU, Proxmox, OpenStack, Cloud Provider or:
 
 *Hardware support coming soon...*
