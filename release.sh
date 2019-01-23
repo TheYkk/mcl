@@ -28,5 +28,5 @@ github-release release \
   -r minimal-container-linux \
   -t "${TAG}"  \
   -n "${TAG}" \
-  d "$(git-chglog --next-tag "${TAG}" "${TAG}" | tail -n+5)"
+  -d "$(git-chglog --next-tag "${TAG}" "${TAG}" | tail -n+5)"
 git pull --tags
