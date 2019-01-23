@@ -17,21 +17,20 @@ mount -t devpts none /dev/pts
 mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
 cd /sys/fs/cgroup || exit 1
 
-for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
-  mkdir -p $sys
-  if ! mountpoint -q $sys; then
-    if ! mount -n -t cgroup -o $sys cgroup $sys; then
-      rmdir $sys || true
+awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups | while IFS= read -r sys; do
+  mkdir -p "$sys"
+  if ! mountpoint -q "$sys"; then
+    if ! mount -n -t cgroup -o "$sys" cgroup "$sys"; then
+      rmdir "$sys" || true
     fi
   fi
 done
 )
 
 # Configure host name
-if [ "$HOSTNAME" ]; then
-  echo "hostname: $HOSTNAME"
-  hostname $HOSTNAME
-fi
+HOSTNAME="${HOSTNAME:-localhost}"
+echo "hostname: $HOSTNAME"
+hostname "$HOSTNAME"
 
 # Configure networking
 ip link set lo up
@@ -59,7 +58,7 @@ if [ "$DOCKER_DATA" ]; then
 fi
 DOCKER_RAMDISK=true dockerd -p /var/run/docker.pid > /var/log/docker.log 2>&1 &
 
-echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
+printf "\nBoot took %s seconds\n" "$(cut -d' ' -f1 /proc/uptime)"
 
 # shell
 while true; do
