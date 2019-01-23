@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# shellcheck disable=SC1091
 . /etc/rc.conf
 
 export PATH="/bin:/usr/bin:/sbin:/usr/sbin"
@@ -14,7 +15,7 @@ mount -t devpts none /dev/pts
 # mount cgroup
 (
 mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
-cd /sys/fs/cgroup
+cd /sys/fs/cgroup || exit 1
 
 for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
   mkdir -p $sys
@@ -43,7 +44,9 @@ ip link set eth0 up
 udhcpc -f -p /var/run/udhcpc.pid > /var/log/udhcpc.log 2>&1 &
 
 # Start rngd (TRNG)
-rngd -f -p /var/run/rngd.pid > /var/log/rngd.log 2>&1 &
+if [ -f /dev/hwrng ]; then
+  rngd -f -r /dev/hwrng -p /var/run/rngd.pid > /var/log/rngd.log 2>&1 &
+fi
 
 # Start dropbear (SSHD)
 dropbear -B -R > /var/log/dropbear.log 2>&1
