@@ -2,6 +2,10 @@
 <a name="v0.0.9"></a>
 ## [v0.0.9](https://github.com/prologic/minimal-container-linux/compare/v0.0.8...v0.0.9) (2019-01-23)
 
+### Bug Fixes
+
+* Fixed release script
+
 
 <a name="v0.0.8"></a>
 ## [v0.0.8](https://github.com/prologic/minimal-container-linux/compare/v0.0.7...v0.0.8) (2018-07-23)
