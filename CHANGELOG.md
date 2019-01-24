@@ -1,4 +1,28 @@
 
+<a name="v0.0.12"></a>
+## [v0.0.12](https://github.com/prologic/minimal-container-linux/compare/v0.0.11...v0.0.12) (2019-01-24)
+
+### Bug Fixes
+
+* Fixed order of docs
+* Fixed configuration and added some useful plugins
+* Fixed small typo in Quick start guide
+
+### Features
+
+* Added install and usage docs
+* Added a Quick start guide
+* Added two new pages
+* Added Jekyl config
+* Added requirements doc
+* Added much improved installation and usage documentation
+
+### Updates
+
+* Updated frontpage to expand on what mcl is
+* Updated the docs theme
+
+
 <a name="v0.0.11"></a>
 ## [v0.0.11](https://github.com/prologic/minimal-container-linux/compare/v0.0.10...v0.0.11) (2019-01-24)
 
