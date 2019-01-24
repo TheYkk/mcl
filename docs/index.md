@@ -23,7 +23,7 @@ possible to support other Container runtimes (*and maybe planned*).
 Try out `mcl` quickly and easily with [QEMU](https://www.qemu.org/):
 
 ```#!bash
-$ $ curl -# -L -O $(curl -s https://api.github.com/repos/prologic/minimal-container-linux/releases/latest | grep -E 'browser_download_url.*\.iso' | cut -d '"' -f 4)
+$ curl -# -L -O $(curl -s https://api.github.com/repos/prologic/minimal-container-linux/releases/latest | grep -E 'browser_download_url.*\.iso' | cut -d '"' -f 4)
 $ qemu-system-x86_64 -m 512M -boot d -cdrom mcl.iso -device virtio-rng-pci
 ```
 
