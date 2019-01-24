@@ -12,11 +12,4 @@
 * Ships in a ~50MB ISO
 * Boots in ~1s
 
-## Requirements
-
-* 512M Memory
-* VirtualBox, QEMU, Proxmox, OpenStack, Cloud Provider or:
-
-*Hardware support coming soon...*
-
 ![Screenshot](screenshot.png)
