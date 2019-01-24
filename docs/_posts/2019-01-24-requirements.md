@@ -3,7 +3,7 @@ layout: page
 title: "Requirements"
 category: doc
 date: 2019-01-24 22:23:00
-order: 1
+order: 2
 ---
 
 - 512M Memory
