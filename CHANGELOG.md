@@ -1,4 +1,16 @@
 
+<a name="v0.0.13"></a>
+## [v0.0.13](https://github.com/prologic/minimal-container-linux/compare/v0.0.12...v0.0.13) (2019-01-27)
+
+### Features
+
+* Added documentation for Block Storage Persistence
+
+### Updates
+
+* Updated to Linux Kernel 4.20.5
+
+
 <a name="v0.0.12"></a>
 ## [v0.0.12](https://github.com/prologic/minimal-container-linux/compare/v0.0.11...v0.0.12) (2019-01-24)
 
