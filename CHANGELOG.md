@@ -1,4 +1,8 @@
 
+<a name="v0.0.14"></a>
+## [v0.0.14](https://github.com/prologic/minimal-container-linux/compare/v0.0.13...v0.0.14) (2019-02-08)
+
+
 <a name="v0.0.13"></a>
 ## [v0.0.13](https://github.com/prologic/minimal-container-linux/compare/v0.0.12...v0.0.13) (2019-01-27)
 
