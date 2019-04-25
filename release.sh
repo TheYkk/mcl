@@ -21,7 +21,7 @@ fi
 echo "Releasing ${TAG} ..."
 
 git-chglog --next-tag="${TAG}" --output CHANGELOG.md
-git ci -a -m "Relase ${TAG}"
+git ci -a -m "Release ${TAG}"
 git push
 github-release release \
   -u prologic \
