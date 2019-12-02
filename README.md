@@ -11,9 +11,7 @@ footprint.
 
 ### Screenshots
 
-![screenshot-1](/screenshot-1.png?raw=true "screenshot-1")
-![screenshot-2](/screenshot-2.png?raw=true "screenshot-2")
-![screenshot-3](/screenshot-3.png?raw=true "screenshot-3")
+![screenshot-1](/screenshot-1.png?raw=true "screenshot-1")![screenshot-2](/screenshot-2.png?raw=true "screenshot-2")![screenshot-3](/screenshot-3.png?raw=true "screenshot-3")
 
 ## Contributing
 
