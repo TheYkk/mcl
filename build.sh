@@ -248,6 +248,9 @@ build_kernel() {
   config n DEBUG_KERNEL
   config mcl DEFAULT_HOSTNAME
 
+  config y IP_PNP
+  config y IP_PNP_DHCP
+
   # RNG
   config y HW_RANDOM_VIRTIO
 
