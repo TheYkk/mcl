@@ -213,6 +213,7 @@ build_rootfs() {
   rm -rf usr/man usr/share/man
   rm -rf usr/lib/pkgconfig
   rm -rf usr/include
+  rm -rf usr/bin/ctr
 
   # Archive rootfs
   find . | cpio -R root:root -H newc -o | gzip -9 > ../rootfs.gz
