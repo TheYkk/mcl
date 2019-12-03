@@ -332,32 +332,27 @@ build_clouddrive() {
   xorrisofs -J -r -V cidata -o ./clouddrive.iso clouddrive/
 }
 
-build_all() {
+download_all() {
   download_musl
-  build_musl
-
   download_busybox
-  build_busybox
-
   download_dropbear
-  build_dropbear
-
   download_rngtools
-  build_rngtools
-
   download_iptables
-  build_iptables
-
   download_docker
-  install_docker
-
   download_kernel
-  build_kernel
+  download_syslinux
+}
 
+build_all() {
+  build_musl
+  build_busybox
+  build_dropbear
+  build_rngtools
+  build_iptables
+  install_docker
+  build_kernel
   write_metadata
   build_rootfs
-
-  download_syslinux
   build_iso
   build_clouddrive
 }
@@ -366,16 +361,22 @@ repack() {
   sync_rootfs
   write_metadata
   build_rootfs
-  download_syslinux
   build_iso
   build_clouddrive
 }
 
 case "${1}" in
+  build)
+    build_all
+    ;;
+  download)
+    download_all
+    ;;
   repack)
     repack
     ;;
   *)
+    download_all
     build_all
     ;;
 esac
