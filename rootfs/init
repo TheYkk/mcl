@@ -43,7 +43,7 @@ ip link set eth0 up
 udhcpc -f -p /var/run/udhcpc.pid > /var/log/udhcpc.log 2>&1 &
 
 # Start rngd (TRNG)
-if [ -f /dev/hwrng ]; then
+if [ -c /dev/hwrng ]; then
   rngd -f -r /dev/hwrng -p /var/run/rngd.pid > /var/log/rngd.log 2>&1 &
 fi
 
