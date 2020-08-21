@@ -1,8 +1,22 @@
 FROM alpine:3.12
 
 RUN apk -U add wget \
-	bc build-base gawk xorriso libelf-dev openssl-dev bison flex \
-	linux-headers perl rsync git argp-standalone make  gcc
+	bc \
+  build-base \
+  gawk \
+  xorriso \
+  libelf-dev \
+  openssl-dev \
+  bison \
+  flex \
+	linux-headers \
+  perl \
+  rsync \
+  git \
+  argp-standalone \
+  make \
+  gcc \
+  libelf-dev 
 
 WORKDIR /build
 
