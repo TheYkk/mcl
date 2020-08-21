@@ -1,19 +1,17 @@
-FROM alpine:3.12
+FROM ubuntu
 
-RUN apk -U add wget \
+RUN apt update && apt install wget \
 	bc \
   build-base \
   gawk \
   xorriso \
   libelf-dev \
-  openssl-dev \
+  libssl-dev \
   bison \
   flex \
-	linux-headers \
   perl \
   rsync \
   git \
-  argp-standalone \
   make \
   gcc 
 
