@@ -2,7 +2,7 @@ FROM ubuntu
 
 RUN apt update && apt install wget \
 	bc \
-  build-base \
+  build-essential \
   gawk \
   xorriso \
   libelf-dev \
