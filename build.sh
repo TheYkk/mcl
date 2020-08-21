@@ -335,7 +335,7 @@ build_clouddrive() {
 download_all() {
   download_musl
   download_busybox
-  download_dropbear
+  
   download_rngtools
   download_iptables
   download_docker
@@ -346,7 +346,7 @@ download_all() {
 build_all() {
   build_musl
   build_busybox
-  build_dropbear
+  
   build_rngtools
   build_iptables
   install_docker
