@@ -1,6 +1,6 @@
 FROM ubuntu
 
-RUN apt update && apt install wget \
+RUN apt update && apt install -y wget \
 	bc \
   build-essential \
   gawk \
