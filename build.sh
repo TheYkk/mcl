@@ -2,14 +2,14 @@
 
 set -ex
 
-KERNEL_VERSION=4.20.8
-MUSL_VERSION=1.1.21
-BUSYBOX_VERSION=1.29.3
-DROPBEAR_VERSION=2019.78
+KERNEL_VERSION=5.8.3
+MUSL_VERSION=1.2.1
+BUSYBOX_VERSION=1.32.0
+DROPBEAR_VERSION=2020.80
 SYSLINUX_VERSION=6.03
 RNGTOOLS_VERSION=5
-IPTABLES_VERSION=1.8.2
-DOCKER_VERSION=19.03.5
+IPTABLES_VERSION=1.8.5
+DOCKER_VERSION=19.03.9
 
 NUM_JOBS="$(grep ^processor /proc/cpuinfo | wc -l)"
 
@@ -35,7 +35,7 @@ download_syslinux() {
 
 download_kernel() {
   wget -q -O kernel.tar.xz \
-    http://kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VERSION.tar.xz
+    http://kernel.org/pub/linux/kernel/v5.x/linux-$KERNEL_VERSION.tar.xz
   tar -xf kernel.tar.xz
 }
 
@@ -300,7 +300,7 @@ build_kernel() {
 
   yes "" | make oldconfig
   make \
-    CFLAGS="-Os -s -fno-stack-protector -U_FORTIFY_SOURCE" \
+    CFLAGS="-Os -s -fno-stack-protector -U_FORTIFY_SOURCE -Wno-error=undef" \
     bzImage -j $NUM_JOBS
   cp arch/x86/boot/bzImage ../kernel.gz
   )
