@@ -15,8 +15,7 @@ RUN apk -U add wget \
   git \
   argp-standalone \
   make \
-  gcc \
-  libelf-dev 
+  gcc 
 
 WORKDIR /build
 
